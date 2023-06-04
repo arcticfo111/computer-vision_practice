@@ -7,6 +7,10 @@ from cv2 import waitKey
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose #포즈추정모델을 가져온다. 
 
+# curl counter var
+counter = 0
+stage = None
+
 # calculate angles 각도 계산 함수 만들기
 def calculate_angle(a,b,c):
     # a,b,c 각 landmarks[mp.pose.PoseLandmark.관절이름.value]의 x,y,z
@@ -45,7 +49,40 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
             angle = calculate_angle(shoulder, elbow, wrist) # 어깨, 팔꿈피, 손목 좌표를 각도 계산 함수에 보내기
             # visualize angle
+            print(angle)
             cv2.putText(image, str(angle), tuple(np.multiply(elbow, [1280,720]).astype(int)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)    #[1280,720]에는 웹캠 크기
+
+            # curl counter logic
+            if angle > 160:
+                stage = 'down'
+            if angle < 60 and stage=='down':
+                stage = 'up'
+                counter+=1
+                print(counter)        
+            # visualize curl counter and stage status
+            cv2.rectangle(image, (0,0), (225,73),(245,117,16), -1)  # 매개변수에 차례로 이미지지정, 시작점, 끝점, 색, 선넓이(음수로 하면 상자도 색이 채워짐)
+            cv2.putText(image, 
+                        'REPS', 
+                        (15,12), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.5, (255, 255, 255), 2, cv2.LINE_AA)    #[1280,720]에는 웹캠 크기
+            cv2.putText(image, 
+                        str(counter), 
+                        (10,60), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.5, (255, 255, 255), 2, cv2.LINE_AA)    #[1280,720]에는 웹캠 크기
+            cv2.putText(image, 
+                        'STAGE', 
+                        (65,12), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.5, (255, 255, 255), 2, cv2.LINE_AA)    #[1280,720]에는 웹캠 크기
+            cv2.putText(image, 
+                        stage, 
+                        (60,60), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.5, (255, 255, 255), 2, cv2.LINE_AA)    #[1280,720]에는 웹캠 크기
+
+        
         except:
             pass
 
