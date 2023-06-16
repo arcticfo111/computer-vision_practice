@@ -1,0 +1,26 @@
+<annotation>
+	<folder>allimages</folder>
+	<filename>0143.jpg</filename>
+	<path>/Users/dobby/Documents/arcticfo111/msaischool_23/real_time_facemask_detection/RealTimeObjectDetection/Tensorflow/workspace/images/allimages/0143.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>683</width>
+		<height>1024</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>NoMask</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>274</xmin>
+			<ymin>498</ymin>
+			<xmax>541</xmax>
+			<ymax>689</ymax>
+		</bndbox>
+	</object>
+</annotation>
